@@ -1,6 +1,7 @@
 #define GL_SILENCE_DEPRECATION 
-#include <GLFW/glfw3.h>
-#include <iostream>
+# include <GLFW/glfw3.h>
+# include <iostream>
+# include "includes/macro.hpp"
 
 // Fonction callback pour ajuster la taille de la fenêtre lorsque celle-ci est redimensionnée
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -21,7 +22,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Créer une fenêtre GLFW
-    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Init", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT, PROGRAM_NAME, nullptr, nullptr);
     if (!window) {
         std::cerr << "Échec de la création de la fenêtre GLFW" << std::endl;
         glfwTerminate();
