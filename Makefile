@@ -5,25 +5,28 @@ GREEN=\033[0;32m
 NC=\033[0m
 
 OBJS_DIR := .objs
-SOURCES = main.cpp
+SOURCES := main.cpp
 
 OBJECTS := $(patsubst %.cpp,$(OBJS_DIR)/%.o,$(SOURCES))
 DEPENDS := $(patsubst %.cpp,$(OBJS_DIR)/%.d,$(SOURCES))
 
 CXX := c++
-CXXFLAGS := -std=c++11 -Wall -Werror -Wextra -g -fsanitize=address
+CXXFLAGS := -std=c++11 -g -fsanitize=address
+
+INCLUDES := -I/Users/mvan-pee/.brew/Cellar/glfw/3.4/include
+LDFLAGS := -L/Users/mvan-pee/.brew/Cellar/glfw/3.4/lib -lglfw -framework OpenGL
 
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
-	@$(CXX) $(CXXFLAGS) $^ -o $@
+	@$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(NAME) $(LDFLAGS)
 	@echo "\n${RED}./$(NAME)\n${NC}"
 
 -include $(DEPENDS)
 
 $(OBJS_DIR)/%.o: %.cpp Makefile
-	@mkdir -p $(@D)  # Create directory if it doesn't exist
-	@$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
+	@mkdir -p $(@D)
+	@$(CXX) $(CXXFLAGS) -Wall -Wextra -Werror $(INCLUDES) -MMD -MP -c $< -o $@
 
 clean:
 	@$(RM) -rf $(OBJS_DIR)
