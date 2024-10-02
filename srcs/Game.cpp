@@ -68,14 +68,7 @@ std::ostream &operator<<(std::ostream &o, const Game &i) {
 
 void Game::run() {
     _key->listening(_window->getWindow());
-    //Background
-	glClearColor(0.3f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	// Lier le _VAO et dessiner le triangle
-	glUseProgram(_draw->getShaderProgram());
-	glBindVertexArray(_draw->getVAO());
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+    _draw->drawing();
 
 	// Traiter les événements and swap buffer
 	glfwPollEvents();

@@ -32,8 +32,42 @@ float vertices[] = {
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 
-Draw::Draw() {
-	/* .    TRIANGLE     */
+Draw::Draw() {}
+
+Draw::Draw(const Draw &ref) { (void)ref; }
+
+/*
+** ------------------------------- DESTRUCTOR ---------------------------------
+*/
+
+Draw::~Draw() {
+	glDeleteVertexArrays(1, &_VAO);
+    glDeleteBuffers(1, &_VBO);
+    glDeleteProgram(_shaderProgram);
+}
+
+/*
+** ------------------------------- OVERLOAD -----------------------------------
+*/
+
+Draw &Draw::operator=(const Draw &ref) {
+	if(this != &ref) {
+		;
+	}
+	return *this;
+}
+
+std::ostream &operator<<(std::ostream &o, const Draw &i) {
+	(void)i;
+	return o;
+}
+
+/*
+** ------------------------------- METHODS -----------------------------------
+*/
+
+void Draw::drawing() {
+    /* .    TRIANGLE     */
     // Charger les shaders
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -69,39 +103,16 @@ Draw::Draw() {
     // Délier le _VBO et le _VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
     glBindVertexArray(0);
+
+    /* .    DRAW     */
+    //Background
+    glClearColor(0.3f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+    // Link VAO and draw the triangle
+    glUseProgram(_shaderProgram);
+	glBindVertexArray(_VAO);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 }
-
-Draw::Draw(const Draw &ref) { (void)ref; }
-
-/*
-** ------------------------------- DESTRUCTOR ---------------------------------
-*/
-
-Draw::~Draw() {
-	glDeleteVertexArrays(1, &_VAO);
-    glDeleteBuffers(1, &_VBO);
-    glDeleteProgram(_shaderProgram);
-}
-
-/*
-** ------------------------------- OVERLOAD -----------------------------------
-*/
-
-Draw &Draw::operator=(const Draw &ref) {
-	if(this != &ref) {
-		;
-	}
-	return *this;
-}
-
-std::ostream &operator<<(std::ostream &o, const Draw &i) {
-	(void)i;
-	return o;
-}
-
-/*
-** ------------------------------- METHODS -----------------------------------
-*/
 
 /*
 ** ------------------------------- ACCESSOR ----------------------------------

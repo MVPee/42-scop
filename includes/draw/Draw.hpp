@@ -13,6 +13,8 @@ class Draw {
 		Draw();
 		~Draw();
 
+		void drawing();
+
 		unsigned int &getShaderProgram();
 		unsigned int &getVAO();
 		unsigned int &getVBO();
