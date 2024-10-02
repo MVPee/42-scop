@@ -10,8 +10,6 @@
 
 KeyListener::KeyListener() {}
 
-KeyListener::KeyListener(const KeyListener &ref) { (void)ref; }
-
 /*
 ** ------------------------------- DESTRUCTOR ---------------------------------
 */
@@ -21,18 +19,6 @@ KeyListener::~KeyListener() {}
 /*
 ** ------------------------------- OVERLOAD -----------------------------------
 */
-
-KeyListener &KeyListener::operator=(const KeyListener &ref) {
-	if(this != &ref) {
-		;
-	}
-	return *this;
-}
-
-std::ostream &operator<<(std::ostream &o, const KeyListener &i) {
-	(void)i;
-	return o;
-}
 
 /*
 ** ------------------------------- METHODS -----------------------------------

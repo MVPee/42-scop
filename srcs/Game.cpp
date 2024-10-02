@@ -20,8 +20,6 @@ Game::Game() {
 
 }
 
-Game::Game(const Game &ref) { (void)ref; }
-
 /*
 ** ------------------------------- DESTRUCTOR ---------------------------------
 */
@@ -35,18 +33,6 @@ Game::~Game() {
 /*
 ** ------------------------------- OVERLOAD -----------------------------------
 */
-
-Game &Game::operator=(const Game &ref) {
-	if(this != &ref) {
-		;
-	}
-	return *this;
-}
-
-std::ostream &operator<<(std::ostream &o, const Game &i) {
-	(void)i;
-	return o;
-}
 
 /*
 ** ------------------------------- METHODS -----------------------------------

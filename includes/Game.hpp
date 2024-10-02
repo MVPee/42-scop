@@ -11,9 +11,6 @@ class Game {
 		Window			*_window;
 		KeyListener		*_key;
 		Draw			*_draw;
-
-		Game(const Game &ref);
-		Game &operator=(const Game &ref);
 	public:
 		Game();
 		~Game();
@@ -22,5 +19,3 @@ class Game {
 
 		bool isOpen() const;
 };
-
-std::ostream &operator<<(std::ostream &o, const Game &i);

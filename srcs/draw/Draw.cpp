@@ -34,8 +34,6 @@ float vertices[] = {
 
 Draw::Draw() {}
 
-Draw::Draw(const Draw &ref) { (void)ref; }
-
 /*
 ** ------------------------------- DESTRUCTOR ---------------------------------
 */
@@ -49,18 +47,6 @@ Draw::~Draw() {
 /*
 ** ------------------------------- OVERLOAD -----------------------------------
 */
-
-Draw &Draw::operator=(const Draw &ref) {
-	if(this != &ref) {
-		;
-	}
-	return *this;
-}
-
-std::ostream &operator<<(std::ostream &o, const Draw &i) {
-	(void)i;
-	return o;
-}
 
 /*
 ** ------------------------------- METHODS -----------------------------------

@@ -33,8 +33,6 @@ Window::Window() {
     glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
 }
 
-Window::Window(const Window &ref) { (void)ref; }
-
 /*
 ** ------------------------------- DESTRUCTOR ---------------------------------
 */
@@ -44,18 +42,6 @@ Window::~Window() { glfwTerminate(); }
 /*
 ** ------------------------------- OVERLOAD -----------------------------------
 */
-
-Window &Window::operator=(const Window &ref) {
-	if(this != &ref) {
-		;
-	}
-	return *this;
-}
-
-std::ostream &operator<<(std::ostream &o, const Window &i) {
-	(void)i;
-	return o;
-}
 
 /*
 ** ------------------------------- METHODS -----------------------------------
