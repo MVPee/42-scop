@@ -43,12 +43,14 @@ void KeyListener::listening(GLFWwindow *window) const {
     static bool keyPressed = false;
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
         if (!keyPressed) {
-            if (count % 2)
+            if (count % 3 == 0)
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            else if (count % 3 == 1)
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             else
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
             count++;
             keyPressed = true;
         }
