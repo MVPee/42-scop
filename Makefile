@@ -5,8 +5,9 @@ GREEN=\033[0;32m
 NC=\033[0m
 
 OBJS_DIR := .objs
-SOURCES := main.cpp \
-			srcs/glad/glad.c
+SOURCES :=	main.cpp \
+			srcs/glad/glad.c \
+			srcs/Window.cpp
 
 OBJECTS := $(patsubst %.cpp,$(OBJS_DIR)/%.o,$(filter %.cpp,$(SOURCES))) \
            $(patsubst %.c,$(OBJS_DIR)/%.o,$(filter %.c,$(SOURCES)))
@@ -29,11 +30,11 @@ $(NAME): $(OBJECTS)
 
 $(OBJS_DIR)/%.o: %.cpp Makefile
 	@mkdir -p $(@D)
-	@$(CXX) $(CXXFLAGS) -Wall -Wextra -Werror $(INCLUDES) -MMD -MP -c $< -o $@
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
 
 $(OBJS_DIR)/%.o: %.c Makefile
 	@mkdir -p $(@D)
-	@$(CC) -Wall -Wextra -Werror $(INCLUDES) -MMD -MP -c $< -o $@
+	@$(CC) $(INCLUDES) -MMD -MP -c $< -o $@
 
 clean:
 	@$(RM) -rf $(OBJS_DIR)
