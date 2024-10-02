@@ -4,3 +4,11 @@
 # define VERSION "0.1"
 # define DEFAULT_WIDTH 800
 # define DEFAULT_HEIGHT 600
+
+# include <iostream>
+# include <string>
+# include "glad/glad.h"
+# include <GLFW/glfw3.h>
+# include "Game.hpp"
+# include "window/Window.hpp"
+# include "listener/KeyListener.hpp"

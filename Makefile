@@ -7,7 +7,9 @@ NC=\033[0m
 OBJS_DIR := .objs
 SOURCES :=	main.cpp \
 			srcs/glad/glad.c \
-			srcs/Window.cpp
+			srcs/Game.cpp \
+			srcs/window/Window.cpp \
+			srcs/listener/KeyListener.cpp
 
 OBJECTS := $(patsubst %.cpp,$(OBJS_DIR)/%.o,$(filter %.cpp,$(SOURCES))) \
            $(patsubst %.c,$(OBJS_DIR)/%.o,$(filter %.c,$(SOURCES)))

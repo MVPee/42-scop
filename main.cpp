@@ -1,11 +1,11 @@
 #define GL_SILENCE_DEPRECATION 
-# include "includes/Window.hpp"
+# include "includes/Game.hpp"
 
 int main() {
     try {
-        Window window;
-        while (window.isOpen())
-            window.run();
+        Game game;
+        while (game.isOpen())
+            game.run();
     }
     catch (std::exception &e) {
         std::cerr << e.what() << std::endl;

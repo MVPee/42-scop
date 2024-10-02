@@ -1,4 +1,4 @@
-# include "../includes/Window.hpp"
+# include "../includes/Game.hpp"
 
 /*
 ** ------------------------------- STATIC -------------------------------------
@@ -26,55 +26,26 @@ float vertices[] = {
     -1.0f, -1.0f, 0.0f, 
     1.0f, -1.0f, 0.0f,
     0.0f, 0.0f, 0.0f, 
-}; 
-
-static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    (void)window;
-    glViewport(0, 0, width, height);
-}
-
-static void processInput(GLFWwindow *window) {
-    static int count = 1;
-    static bool keyPressed = false;
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
-        if (!keyPressed) {
-            if (count % 2)
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            else
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            count++;
-            keyPressed = true;
-        }
-    }
-    else
-        keyPressed = false;
-}
+};
 
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 
-Window::Window() {
-    if (!glfwInit())
-        throw std::runtime_error("Failed to initialize GLFW");
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    const std::string windowHeader = std::string(PROGRAM_NAME) + " " + std::string(VERSION);
-    _window = glfwCreateWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT, windowHeader.c_str(), nullptr, nullptr);
-    if (!_window) {
-        glfwTerminate();
-        throw std::runtime_error("Failed to create GLFW window");
+Game::Game() {
+    try {
+        _window = new Window();
     }
-    glfwMakeContextCurrent(_window);
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        glfwTerminate();
-        throw std::runtime_error("Failed to initialize GLAD");
+    catch (std::exception &e) {
+        throw std::runtime_error(e.what());
     }
-    glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
+    try {
+        _key = new KeyListener();
+    }
+    catch (std::exception &e) {
+        delete _window;
+        throw std::runtime_error(e.what());
+    }
 
     /* .    TRIANGLE     */
     // Charger les shaders
@@ -89,16 +60,14 @@ Window::Window() {
     // Lier les shaders à un programme
     _shaderProgram = glCreateProgram();  // Changez cela
     glAttachShader(_shaderProgram, vertexShader);
+    glDeleteShader(vertexShader);
     glAttachShader(_shaderProgram, fragmentShader);
+    glDeleteShader(fragmentShader);
     glLinkProgram(_shaderProgram);
 
-    // Supprimer les shaders car ils ne sont plus nécessaires
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
     // Créer un _VAO et un _VBO pour les sommets
-    glGenVertexArrays(1, &_VAO);  // Changez cela
-    glGenBuffers(1, &_VBO);       // Changez cela
+    glGenVertexArrays(1, &_VAO);
+    glGenBuffers(1, &_VBO);
 
     // Lier le _VAO
     glBindVertexArray(_VAO);
@@ -117,31 +86,32 @@ Window::Window() {
 }
 
 
-Window::Window(const Window &ref) { (void)ref; }
+Game::Game(const Game &ref) { (void)ref; }
 
 /*
 ** ------------------------------- DESTRUCTOR ---------------------------------
 */
 
-Window::~Window() {
+Game::~Game() {
 	glDeleteVertexArrays(1, &_VAO);
     glDeleteBuffers(1, &_VBO);
     glDeleteProgram(_shaderProgram);
-    glfwTerminate();
+    delete _window;
+    delete _key;
 }
 
 /*
 ** ------------------------------- OVERLOAD -----------------------------------
 */
 
-Window &Window::operator=(const Window &ref) {
+Game &Game::operator=(const Game &ref) {
 	if(this != &ref) {
 		;
 	}
 	return *this;
 }
 
-std::ostream &operator<<(std::ostream &o, const Window &i) {
+std::ostream &operator<<(std::ostream &o, const Game &i) {
 	(void)i;
 	return o;
 }
@@ -150,10 +120,9 @@ std::ostream &operator<<(std::ostream &o, const Window &i) {
 ** ------------------------------- METHODS -----------------------------------
 */
 
-void Window::run() {
+void Game::run() {
 	// input
-	processInput(_window);
-
+    _key->listening(_window->getWindow());
 	// Rendering, Nettoyer l'écran avec une couleur (par exemple, bleu)
 	glClearColor(0.3f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -166,14 +135,13 @@ void Window::run() {
 
 	// Traiter les événements and swap buffer
 	glfwPollEvents();
-	glfwSwapBuffers(_window);
+	glfwSwapBuffers(_window->getWindow());
 }
 
 /*
 ** ------------------------------- ACCESSOR ----------------------------------
 */
 
-const GLFWwindow *Window::getWindow() const { return _window; }
-bool Window::isOpen() const { return !glfwWindowShouldClose(_window); }
+bool Game::isOpen() const { return !glfwWindowShouldClose(_window->getWindow()); }
 
 /* ************************************************************************** */
