@@ -1,12 +1,37 @@
 #define GL_SILENCE_DEPRECATION 
+# include "includes/glad/glad.h"
 # include <GLFW/glfw3.h>
 # include <iostream>
 # include "includes/macro.hpp"
+
+const char *vertexShaderSource = "#version 330 core\n"
+    "layout (location = 0) in vec3 aPos;\n"
+    "void main()\n"
+    "{\n"
+    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "}\0";
+const char *fragmentShaderSource = "#version 330 core\n"
+    "out vec4 FragColor;\n"
+    "void main()\n"
+    "{\n"
+    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "}\n\0";
+
+float vertices[] = {
+    -0.5f, -0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f,
+     0.0f,  0.5f, 0.0f
+};//  x      y     z
 
 // Fonction callback pour ajuster la taille de la fenêtre lorsque celle-ci est redimensionnée
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     (void)window;
     glViewport(0, 0, width, height);
+}
+
+void processInput(GLFWwindow *window) {
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
 }
 
 int main() {
@@ -22,9 +47,10 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Créer une fenêtre GLFW
-    GLFWwindow* window = glfwCreateWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT, PROGRAM_NAME, nullptr, nullptr);
+    const std::string windowHeader = std::string(PROGRAM_NAME) + " " + std::string(VERSION);
+    GLFWwindow* window = glfwCreateWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT, windowHeader.c_str(), nullptr, nullptr);
     if (!window) {
-        std::cerr << "Échec de la création de la fenêtre GLFW" << std::endl;
+        std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return 1;
     }
@@ -32,23 +58,76 @@ int main() {
     // Définir le contexte OpenGL pour la fenêtre
     glfwMakeContextCurrent(window);
 
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+        return 1;
+    }
+
     // Spécifier la fonction de rappel pour redimensionner la fenêtre
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    // Charger les shaders
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+    // Lier les shaders à un programme
+    unsigned int shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    // Supprimer les shaders car ils ne sont plus nécessaires
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    // Créer un VAO et un VBO pour les sommets
+    unsigned int VAO, VBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    // Lier le VAO
+    glBindVertexArray(VAO);
+
+    // Lier le VBO et transférer les données des sommets
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Spécifier le format des sommets
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Délier le VBO et le VAO
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+    glBindVertexArray(0);
+
     // Boucle principale de rendu
     while (!glfwWindowShouldClose(window)) {
-        // Nettoyer l'écran avec une couleur (par exemple, bleu)
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        // input
+        processInput(window);
+
+        // Rendering, Nettoyer l'écran avec une couleur (par exemple, bleu)
+        glClearColor(0.3f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // Échanger les tampons avant/arrière
-        glfwSwapBuffers(window);
+        glUseProgram(shaderProgram);
 
-        // Traiter les événements
+        // Lier le VAO et dessiner le triangle
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        // Traiter les événements and swap buffer
         glfwPollEvents();
+        glfwSwapBuffers(window);
     }
 
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteProgram(shaderProgram);
     // Nettoyage et fermeture de GLFW
     glfwTerminate();
-    return 0;
 }
