@@ -15,23 +15,9 @@ Game::Game() {
     catch (std::exception &e) {
         throw std::runtime_error(e.what());
     }
+    _key = new KeyListener();
+    _draw = new Draw();
 
-    try {
-        _key = new KeyListener();
-    }
-    catch (std::exception &e) {
-        delete _window;
-        throw std::runtime_error(e.what());
-    }
-
-    try {
-        _draw = new Draw();
-    }
-    catch (std::exception &e) {
-        delete _window;
-        delete _key;
-        throw std::runtime_error(e.what());
-    }
 }
 
 Game::Game(const Game &ref) { (void)ref; }
