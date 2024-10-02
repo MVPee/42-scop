@@ -4,13 +4,13 @@
 
 class Window;
 class KeyListener;
+class Draw;
 
 class Game {
 	private:
 		Window			*_window;
 		KeyListener		*_key;
-		unsigned int 	_shaderProgram;
-		unsigned int 	_VAO, _VBO;
+		Draw			*_draw;
 
 		Game(const Game &ref);
 		Game &operator=(const Game &ref);

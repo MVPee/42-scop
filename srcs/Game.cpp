@@ -4,30 +4,6 @@
 ** ------------------------------- STATIC -------------------------------------
 */
 
-const char *vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-const char *fragmentShaderSource = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n\0";
-
-float vertices[] = {
-    // first triangle
-    -1.0f, 1.0f, 0.0f, 
-    1.0f, 1.0f, 0.0f,
-    0.0f, 0.0f, 0.0f, 
-
-    -1.0f, -1.0f, 0.0f, 
-    1.0f, -1.0f, 0.0f,
-    0.0f, 0.0f, 0.0f, 
-};
-
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
@@ -39,6 +15,7 @@ Game::Game() {
     catch (std::exception &e) {
         throw std::runtime_error(e.what());
     }
+
     try {
         _key = new KeyListener();
     }
@@ -47,44 +24,15 @@ Game::Game() {
         throw std::runtime_error(e.what());
     }
 
-    /* .    TRIANGLE     */
-    // Charger les shaders
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    // Lier les shaders à un programme
-    _shaderProgram = glCreateProgram();  // Changez cela
-    glAttachShader(_shaderProgram, vertexShader);
-    glDeleteShader(vertexShader);
-    glAttachShader(_shaderProgram, fragmentShader);
-    glDeleteShader(fragmentShader);
-    glLinkProgram(_shaderProgram);
-
-    // Créer un _VAO et un _VBO pour les sommets
-    glGenVertexArrays(1, &_VAO);
-    glGenBuffers(1, &_VBO);
-
-    // Lier le _VAO
-    glBindVertexArray(_VAO);
-
-    // Lier le _VBO et transférer les données des sommets
-    glBindBuffer(GL_ARRAY_BUFFER, _VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Spécifier le format des sommets
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Délier le _VBO et le _VAO
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    glBindVertexArray(0);
+    try {
+        _draw = new Draw();
+    }
+    catch (std::exception &e) {
+        delete _window;
+        delete _key;
+        throw std::runtime_error(e.what());
+    }
 }
-
 
 Game::Game(const Game &ref) { (void)ref; }
 
@@ -93,11 +41,9 @@ Game::Game(const Game &ref) { (void)ref; }
 */
 
 Game::~Game() {
-	glDeleteVertexArrays(1, &_VAO);
-    glDeleteBuffers(1, &_VBO);
-    glDeleteProgram(_shaderProgram);
     delete _window;
     delete _key;
+    delete _draw;
 }
 
 /*
@@ -121,16 +67,14 @@ std::ostream &operator<<(std::ostream &o, const Game &i) {
 */
 
 void Game::run() {
-	// input
     _key->listening(_window->getWindow());
-	// Rendering, Nettoyer l'écran avec une couleur (par exemple, bleu)
+    //Background
 	glClearColor(0.3f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-
 	// Lier le _VAO et dessiner le triangle
-	glUseProgram(_shaderProgram);
-	glBindVertexArray(_VAO);
+	glUseProgram(_draw->getShaderProgram());
+	glBindVertexArray(_draw->getVAO());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 
 	// Traiter les événements and swap buffer
