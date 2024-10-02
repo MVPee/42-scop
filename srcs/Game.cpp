@@ -57,8 +57,7 @@ void Game::run() {
     _draw->drawing();
 
 	// Traiter les événements and swap buffer
-	glfwPollEvents();
-	glfwSwapBuffers(_window->getWindow());
+    glfwSwapBuffers(_window->getWindow());
 }
 
 /*

@@ -41,6 +41,8 @@ std::ostream &operator<<(std::ostream &o, const KeyListener &i) {
 void KeyListener::listening(GLFWwindow *window) const {
     static int count = 1;
     static bool keyPressed = false;
+
+    glfwPollEvents();
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
