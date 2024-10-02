@@ -18,10 +18,15 @@ const char *fragmentShaderSource = "#version 330 core\n"
     "}\n\0";
 
 float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
-};//  x      y     z
+    // first triangle
+    -1.0f, 1.0f, 0.0f, 
+    1.0f, 1.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 
+
+    -1.0f, -1.0f, 0.0f, 
+    1.0f, -1.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 
+}; 
 
 // Fonction callback pour ajuster la taille de la fenêtre lorsque celle-ci est redimensionnée
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -30,8 +35,22 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void processInput(GLFWwindow *window) {
+    static int count = 1;
+    static bool keyPressed = false;
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+        if (!keyPressed) {
+            if (count % 2)
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            else
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            count++;
+            keyPressed = true;
+        }
+    }
+    else
+        keyPressed = false;
 }
 
 int main() {
@@ -114,11 +133,11 @@ int main() {
         glClearColor(0.3f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
 
         // Lier le VAO et dessiner le triangle
+        glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 
         // Traiter les événements and swap buffer
         glfwPollEvents();
