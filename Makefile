@@ -6,7 +6,7 @@ NC=\033[0m
 
 OBJS_DIR := .objs
 SOURCES :=	main.cpp \
-			srcs/glad/glad.cpp \
+			glad/glad.cpp \
 			srcs/Game.cpp \
 			srcs/window/Window.cpp \
 			srcs/listener/KeyListener.cpp \

@@ -7,7 +7,7 @@
 
 # include <iostream>
 # include <string>
-# include "glad/glad.hpp"
+# include "../glad/glad.hpp"
 # include <GLFW/glfw3.h>
 # include "Game.hpp"
 # include "window/Window.hpp"
