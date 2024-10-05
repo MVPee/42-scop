@@ -38,11 +38,7 @@ Draw::Draw() {}
 ** ------------------------------- DESTRUCTOR ---------------------------------
 */
 
-Draw::~Draw() {
-	glDeleteVertexArrays(1, &_VAO);
-    glDeleteBuffers(1, &_VBO);
-    glDeleteProgram(_shaderProgram);
-}
+Draw::~Draw() {}
 
 /*
 ** ------------------------------- OVERLOAD -----------------------------------
@@ -98,6 +94,10 @@ void Draw::drawing() {
     glUseProgram(_shaderProgram);
 	glBindVertexArray(_VAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+
+    glDeleteVertexArrays(1, &_VAO);
+    glDeleteBuffers(1, &_VBO);
+    glDeleteProgram(_shaderProgram);
 }
 
 /*
