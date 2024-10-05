@@ -4,20 +4,16 @@
 
 class Camera {
 	private:
-		float _x;
-		float _y;
-		float _z;
-		unsigned short int _rotation;
+		glm::vec3 _cameraPos; // POSITION
+		glm::vec3 _cameraFront; // DIRECTION
+		glm::vec3 _cameraUp; // HEIGHT
+		float _yaw; // Y
+		float _pitch; // X
 	public:
 		Camera();
 		~Camera();
-	
-	void forward();
-	void backward();
-	void right();
-	void left();
 
-	const float &getX() const;
-	const float &getY() const;
-	const float &getZ() const;
+		void processKeyboard(int direction, float deltaTime);
+		void processMouseMovement(float xOffset, float yOffset);
+		glm::mat4 getViewMatrix() const;
 };

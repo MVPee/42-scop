@@ -41,7 +41,13 @@ Game::~Game() {
 */
 
 void Game::run() {
-    _key->listening(_window->getWindow());
+    static float lastFrame = 0.0f;
+    static float deltaTime = 0.0f;
+    float currentFrame = glfwGetTime();
+    deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+
+    _key->listening(_window->getWindow(), deltaTime);
     _draw->drawing();
 
 	// Traiter les événements and swap buffer

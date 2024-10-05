@@ -30,7 +30,9 @@ Window::Window() {
         glfwTerminate();
         throw std::runtime_error("Failed to initialize GLAD");
     }
+    glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
     glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
+    glEnable(GL_DEPTH_TEST);
 }
 
 /*
