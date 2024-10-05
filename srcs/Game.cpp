@@ -25,8 +25,8 @@ Game::Game() {
 */
 
 Game::~Game() {
-    delete _key;
     delete _draw;
+    delete _key;
     delete _window;
 }
 
