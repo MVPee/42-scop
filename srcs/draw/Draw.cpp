@@ -76,6 +76,8 @@ Draw::Draw(Camera *camera) : _camera(camera) {
     // color attribute
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
+    glEnable(GL_DEPTH_TEST);
 }
 
 /*

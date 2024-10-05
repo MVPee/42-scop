@@ -13,7 +13,8 @@ class Camera {
 		Camera();
 		~Camera();
 
-		void processKeyboard(int direction, float deltaTime);
+		void processKeyboardMovement(int direction, float deltaTime);
 		void processMouseMovement(float xOffset, float yOffset);
+		void updateCameraVectors();
 		glm::mat4 getViewMatrix() const;
 };

@@ -28,12 +28,8 @@ KeyListener::~KeyListener() {}
 ** ------------------------------- METHODS -----------------------------------
 */
 
-void KeyListener::listening(GLFWwindow *window, float deltaTime) const {
-    static int count = 1;
-    static bool keyPressed = false;
+void KeyListener::handleMouseMovement(GLFWwindow *window) {
     double xpos, ypos;
-
-    glfwPollEvents();
     
     glfwGetCursorPos(window, &xpos, &ypos);
     if (_firstMouse) {
@@ -47,19 +43,40 @@ void KeyListener::listening(GLFWwindow *window, float deltaTime) const {
     _lastX = xpos;
     _lastY = ypos;
     _camera->processMouseMovement(xOffset, -yOffset);
+}
+
+void KeyListener::handleMovement(GLFWwindow *window, float deltaTime) {
+    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        _camera->processKeyboardMovement(GLFW_KEY_W, deltaTime);
+    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        _camera->processKeyboardMovement(GLFW_KEY_S, deltaTime);
+    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        _camera->processKeyboardMovement(GLFW_KEY_A, deltaTime);
+    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        _camera->processKeyboardMovement(GLFW_KEY_D, deltaTime);
+
+    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        _camera->processKeyboardMovement(GLFW_KEY_UP, deltaTime);
+    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        _camera->processKeyboardMovement(GLFW_KEY_DOWN, deltaTime);
+    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+        _camera->processKeyboardMovement(GLFW_KEY_LEFT, deltaTime);
+    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+        _camera->processKeyboardMovement(GLFW_KEY_RIGHT, deltaTime);
+
+    handleMouseMovement(window);
+}
+
+void KeyListener::listening(GLFWwindow *window, float deltaTime) {
+    static int count = 1;
+    static bool keyPressed = false;
+
+    glfwPollEvents();
+
+    handleMovement(window, deltaTime);
 
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-
-    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        _camera->processKeyboard(GLFW_KEY_W, deltaTime);
-    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        _camera->processKeyboard(GLFW_KEY_S, deltaTime);
-    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        _camera->processKeyboard(GLFW_KEY_A, deltaTime);
-    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        _camera->processKeyboard(GLFW_KEY_D, deltaTime);
-
     if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
         if (!keyPressed) {
             if (count % 3 == 0)

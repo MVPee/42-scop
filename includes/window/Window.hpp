@@ -11,5 +11,3 @@ class Window {
 
 		GLFWwindow *getWindow() const;
 };
-
-std::ostream &operator<<(std::ostream &o, const Window &i);

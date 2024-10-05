@@ -28,7 +28,21 @@ Camera::~Camera() {}
 ** ------------------------------- METHODS -----------------------------------
 */
 
-void Camera::processKeyboard(int direction, float deltaTime) {
+void Camera::updateCameraVectors() {
+    glm::vec3 front;
+    front.x = cos(glm::radians(_yaw)) * cos(glm::radians(_pitch));
+    front.y = sin(glm::radians(_pitch));
+    front.z = sin(glm::radians(_yaw)) * cos(glm::radians(_pitch));
+    _cameraFront = glm::normalize(front);
+
+    glm::vec3 worldUp(0.0f, 1.0f, 0.0f);
+
+    glm::vec3 cameraRight = glm::normalize(glm::cross(_cameraFront, worldUp));
+    _cameraUp = glm::normalize(glm::cross(cameraRight, _cameraFront));
+}
+
+
+void Camera::processKeyboardMovement(int direction, float deltaTime) {
     float velocity = CAMERA_SPEED * deltaTime;
     if (direction == GLFW_KEY_W)
         _cameraPos += _cameraFront * velocity;
@@ -38,6 +52,17 @@ void Camera::processKeyboard(int direction, float deltaTime) {
         _cameraPos -= glm::normalize(glm::cross(_cameraFront, _cameraUp)) * velocity;
     if (direction == GLFW_KEY_D)
         _cameraPos += glm::normalize(glm::cross(_cameraFront, _cameraUp)) * velocity;
+
+    if (direction == GLFW_KEY_UP)
+        _pitch += CAMERA_SPEED * velocity; 
+    if (direction == GLFW_KEY_DOWN)
+        _pitch -= CAMERA_SPEED * velocity;
+    if (direction == GLFW_KEY_LEFT)
+        _yaw -= CAMERA_SPEED * velocity;
+    if (direction == GLFW_KEY_RIGHT)
+        _yaw += CAMERA_SPEED * velocity;
+
+    updateCameraVectors();
 }
 
 void Camera::processMouseMovement(float xOffset, float yOffset) {
