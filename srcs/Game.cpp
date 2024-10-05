@@ -15,8 +15,9 @@ Game::Game() {
     catch (std::exception &e) {
         throw std::runtime_error(e.what());
     }
-    _key = new KeyListener();
-    _draw = new Draw();
+    _camera = new Camera();
+    _key = new KeyListener(_camera);
+    _draw = new Draw(_camera);
 
 }
 
@@ -25,6 +26,7 @@ Game::Game() {
 */
 
 Game::~Game() {
+    delete _camera;
     delete _draw;
     delete _key;
     delete _window;

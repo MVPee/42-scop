@@ -2,12 +2,15 @@
 
 # include "../macro.hpp"
 
+class Camera;
+
 class Draw {
 	private:
 		unsigned int 	_shaderProgram;
 		unsigned int 	_VAO, _VBO;
+		Camera			*_camera;
 	public:
-		Draw();
+		Draw(Camera *camera);
 		~Draw();
 
 		void drawing();

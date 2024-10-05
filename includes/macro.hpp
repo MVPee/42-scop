@@ -13,3 +13,4 @@
 # include "window/Window.hpp"
 # include "listener/KeyListener.hpp"
 # include "draw/Draw.hpp"
+# include "camera/Camera.hpp"

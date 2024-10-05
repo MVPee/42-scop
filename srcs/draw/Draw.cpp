@@ -17,22 +17,11 @@ const char *fragmentShaderSource = "#version 330 core\n"
     "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
     "}\n\0";
 
-float vertices[] = {
-    // first triangle
-    -1.0f, 1.0f, 0.0f, 
-    1.0f, 1.0f, 0.0f,
-    0.0f, 0.0f, 0.0f, 
-
-    -1.0f, -1.0f, 0.0f, 
-    1.0f, -1.0f, 0.0f,
-    0.0f, 0.0f, 0.0f, 
-};
-
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 
-Draw::Draw() {}
+Draw::Draw(Camera *camera) : _camera(camera) {}
 
 /*
 ** ------------------------------- DESTRUCTOR ---------------------------------
@@ -49,6 +38,12 @@ Draw::~Draw() {}
 */
 
 void Draw::drawing() {
+    float vertices[] = {
+        -0.8f, -0.8f, 0.0f, 
+        0.8f, -0.8f, 0.0f,
+        0.0f, 0.5f, 0.0f, 
+    };
+
     /* .    TRIANGLE     */
     // Charger les shaders
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -93,7 +88,7 @@ void Draw::drawing() {
     // Link VAO and draw the triangle
     glUseProgram(_shaderProgram);
 	glBindVertexArray(_VAO);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 3);
 
     glDeleteVertexArrays(1, &_VAO);
     glDeleteBuffers(1, &_VBO);
