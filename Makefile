@@ -18,7 +18,7 @@ OBJECTS := $(patsubst %.cpp,$(OBJS_DIR)/%.o,$(filter %.cpp,$(SOURCES)))
 DEPENDS := $(OBJECTS:.o=.d)
 
 CXX := c++
-CXXFLAGS := -std=c++11 -Wall -Wextra -Werror -g #-fsanitize=address
+CXXFLAGS := -std=c++11 -Wall -Wextra -Werror #-g -fsanitize=address
 
 ifeq ($(UNAME_S), Darwin)
 	INCLUDES := -I/Users/mvan-pee/.brew/Cellar/glfw/3.4/include
