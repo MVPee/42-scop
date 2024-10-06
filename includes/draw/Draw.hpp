@@ -3,18 +3,12 @@
 # include "../macro.hpp"
 
 class Camera;
-class Shader;
+class Object;
 
 class Draw {
 	private:
-		unsigned int 				_VAO, _VBO, _EBO;
-		std::vector<float>			_vertices;
-		std::vector<unsigned int>	_indices;
-		Camera						*_camera;
-		Shader						*_shader;
-		glm::vec3 					_objectPosition;
-
-		void parseObject(std::ifstream &file);
+		Camera	*_camera;
+		Object	*_object;
 	public:
 		Draw(Camera *camera, std::ifstream &file);
 		~Draw();

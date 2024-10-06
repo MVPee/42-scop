@@ -32,6 +32,7 @@ Window::Window() {
     }
     glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
     glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
+    glEnable(GL_DEPTH_TEST);
 }
 
 /*

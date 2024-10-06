@@ -1,4 +1,4 @@
-# include "../../../includes/draw/shader/Shader.hpp"
+# include "../../../includes/object/shader/Shader.hpp"
 
 /*
 ** ------------------------------- STATIC -------------------------------------

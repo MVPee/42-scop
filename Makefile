@@ -13,8 +13,9 @@ SOURCES :=	main.cpp \
 			srcs/window/Window.cpp \
 			srcs/listener/KeyListener.cpp \
 			srcs/draw/Draw.cpp \
-			srcs/draw/shader/Shader.cpp \
-			srcs/camera/Camera.cpp
+			srcs/camera/Camera.cpp \
+			srcs/object/Object.cpp \
+			srcs/object/shader/Shader.cpp
 
 OBJECTS := $(patsubst %.cpp,$(OBJS_DIR)/%.o,$(filter %.cpp,$(SOURCES)))
 DEPENDS := $(OBJECTS:.o=.d)

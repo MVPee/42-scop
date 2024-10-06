@@ -26,5 +26,6 @@
 # include "window/Window.hpp"
 # include "listener/KeyListener.hpp"
 # include "draw/Draw.hpp"
-# include "draw/shader/Shader.hpp"
 # include "camera/Camera.hpp"
+# include "object/Object.hpp"
+# include "object/shader/Shader.hpp"
