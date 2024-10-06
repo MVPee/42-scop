@@ -3,14 +3,15 @@
 # include "../macro.hpp"
 
 class Camera;
+class Shader;
 
 class Draw {
 	private:
-		unsigned int 				_shaderProgram;
 		unsigned int 				_VAO, _VBO, _EBO;
 		std::vector<float>			_vertices;
 		std::vector<unsigned int>	_indices;
 		Camera						*_camera;
+		Shader						*_shader;
 
 		void parseObject(std::ifstream &file);
 	public:
@@ -18,8 +19,4 @@ class Draw {
 		~Draw();
 
 		void drawing();
-
-		unsigned int &getShaderProgram();
-		unsigned int &getVAO();
-		unsigned int &getVBO();
 };

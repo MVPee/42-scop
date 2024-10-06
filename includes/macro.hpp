@@ -1,7 +1,7 @@
 #pragma once
 
 # define PROGRAM_NAME "scop"
-# define VERSION "0.3"
+# define VERSION "0.5"
 # define DEFAULT_WIDTH 1920
 # define DEFAULT_HEIGHT 1080
 # define CAMERA_SPEED 10.0f
@@ -22,4 +22,5 @@
 # include "window/Window.hpp"
 # include "listener/KeyListener.hpp"
 # include "draw/Draw.hpp"
+# include "draw/shader/Shader.hpp"
 # include "camera/Camera.hpp"
