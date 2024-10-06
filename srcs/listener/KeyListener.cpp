@@ -64,6 +64,11 @@ void KeyListener::handleMovement(GLFWwindow *window, float deltaTime) {
     if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
         _camera->processKeyboardMovement(GLFW_KEY_RIGHT, deltaTime);
 
+    if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        _camera->processKeyboardMovement(GLFW_KEY_SPACE, deltaTime);
+    if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+            _camera->processKeyboardMovement(GLFW_KEY_LEFT_SHIFT, deltaTime);
+
     handleMouseMovement(window);
 }
 

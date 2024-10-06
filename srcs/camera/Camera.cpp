@@ -42,24 +42,30 @@ void Camera::updateCameraVectors() {
 }
 
 
-void Camera::processKeyboardMovement(int direction, float deltaTime) {
+void Camera::processKeyboardMovement(int key, float deltaTime) {
     float velocity = CAMERA_SPEED * deltaTime;
-    if (direction == GLFW_KEY_W)
-        _cameraPos += _cameraFront * velocity;
-    if (direction == GLFW_KEY_S)
-        _cameraPos -= _cameraFront * velocity;
-    if (direction == GLFW_KEY_A)
-        _cameraPos -= glm::normalize(glm::cross(_cameraFront, _cameraUp)) * velocity;
-    if (direction == GLFW_KEY_D)
-        _cameraPos += glm::normalize(glm::cross(_cameraFront, _cameraUp)) * velocity;
+    glm::vec3 directionFront = glm::normalize(glm::vec3(_cameraFront.x, 0.0f, _cameraFront.z));
+    if (key == GLFW_KEY_W)
+        _cameraPos += directionFront * velocity;
+    if (key == GLFW_KEY_S)
+        _cameraPos -= directionFront * velocity;
+    if (key == GLFW_KEY_A)
+        _cameraPos -= glm::normalize(glm::cross(directionFront, _cameraUp)) * velocity;
+    if (key == GLFW_KEY_D)
+        _cameraPos += glm::normalize(glm::cross(directionFront, _cameraUp)) * velocity;
 
-    if (direction == GLFW_KEY_UP)
+    if (key == GLFW_KEY_SPACE)
+        _cameraPos.y += velocity;
+    if (key == GLFW_KEY_LEFT_SHIFT)
+        _cameraPos.y -= velocity;
+
+    if (key == GLFW_KEY_UP)
         _pitch += CAMERA_SPEED * velocity; 
-    if (direction == GLFW_KEY_DOWN)
+    if (key == GLFW_KEY_DOWN)
         _pitch -= CAMERA_SPEED * velocity;
-    if (direction == GLFW_KEY_LEFT)
+    if (key == GLFW_KEY_LEFT)
         _yaw -= CAMERA_SPEED * velocity;
-    if (direction == GLFW_KEY_RIGHT)
+    if (key == GLFW_KEY_RIGHT)
         _yaw += CAMERA_SPEED * velocity;
 
     updateCameraVectors();
