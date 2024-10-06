@@ -133,15 +133,13 @@ void Draw::drawing() {
     glm::mat4 mvp;
 
     //? Transform (Camera)
-    if (_camera->getMode() == FREELOOK) {
+    if (_camera->getMode() == FREELOOK)
         view = _camera->getViewMatrix();
-    }
     else {
-        float radius = 5.0f;
         static float angle = 0.0f;
-        angle += 0.01f;
-        float camX = _objectPosition.x + radius * cos(angle);
-        float camZ = _objectPosition.z + radius * sin(angle);
+        angle += TURN_AROUND_SPEED;
+        float camX = _objectPosition.x + TURN_AROUND_DISTANCE * cos(angle);
+        float camZ = _objectPosition.z + TURN_AROUND_DISTANCE * sin(angle);
         float camY = _objectPosition.y;
         view = glm::lookAt(glm::vec3(camX, camY, camZ), _objectPosition, glm::vec3(0.0f, 1.0f, 0.0f));
     }

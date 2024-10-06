@@ -1,11 +1,14 @@
 #pragma once
 
 # define PROGRAM_NAME "scop"
-# define VERSION "0.6"
+# define VERSION "0.75"
 # define DEFAULT_WIDTH 1920
 # define DEFAULT_HEIGHT 1080
 # define CAMERA_SPEED 10.0f
 # define MOUSE_SPEED 0.15f
+
+# define TURN_AROUND_SPEED 0.02f
+# define TURN_AROUND_DISTANCE 10.0f
 
 # include <iostream>
 # include <string>
