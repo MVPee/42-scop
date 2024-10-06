@@ -33,8 +33,8 @@ void KeyListener::handleMouseMovement(GLFWwindow *window) {
     
     glfwGetCursorPos(window, &xpos, &ypos);
     if (_firstMouse) {
-        _lastX = (float)xpos;
-        _lastY = (float)ypos;
+        _lastX = xpos;
+        _lastY = ypos;
         _firstMouse = false;
     }
     float xOffset = xpos - _lastX;

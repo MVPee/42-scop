@@ -19,5 +19,5 @@ class Game {
 
 		void run();
 
-		bool isOpen() const;
+		bool isRunning() const;
 };

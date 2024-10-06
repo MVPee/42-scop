@@ -20,7 +20,7 @@ int main(int ac, char **av) {
 
     try {
         Game game(file);
-        while (game.isOpen())
+        while (game.isRunning())
             game.run();
     }
     catch (std::exception &e) {

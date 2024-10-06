@@ -58,6 +58,6 @@ void Game::run() {
 ** ------------------------------- ACCESSOR ----------------------------------
 */
 
-bool Game::isOpen() const { return !glfwWindowShouldClose(_window->getWindow()); }
+bool Game::isRunning() const { return !glfwWindowShouldClose(_window->getWindow()); }
 
 /* ************************************************************************** */

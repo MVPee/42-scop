@@ -11,11 +11,12 @@ class KeyListener {
 		bool 	_firstMouse;
 		float	_lastX;
 		float	_lastY;
+
+		void handleMovement(GLFWwindow *window, float deltaTime);
+		void handleMouseMovement(GLFWwindow *window);
 	public:
 		KeyListener(Camera *camera);
 		~KeyListener();
 
 		void listening(GLFWwindow *window, float deltaTime);
-		void handleMovement(GLFWwindow *window, float deltaTime);
-		void handleMouseMovement(GLFWwindow *window);
 };
