@@ -43,6 +43,7 @@ void Camera::updateCameraVectors() {
 
 
 void Camera::processKeyboardMovement(int key, float deltaTime) {
+    setMode(FREELOOK);
     float velocity = CAMERA_SPEED * deltaTime;
     glm::vec3 directionFront = glm::normalize(glm::vec3(_cameraFront.x, 0.0f, _cameraFront.z));
     if (key == GLFW_KEY_W)
