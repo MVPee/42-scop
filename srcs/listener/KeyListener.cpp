@@ -76,7 +76,8 @@ void KeyListener::handleMovement(GLFWwindow *window, float deltaTime) {
 
 void KeyListener::listening(GLFWwindow *window, float deltaTime) {
     static int count = 1;
-    static bool keyPressed = false;
+    static bool f_Pressed = false;
+    static bool m_Pressed = false;
 
     glfwPollEvents();
 
@@ -84,8 +85,20 @@ void KeyListener::listening(GLFWwindow *window, float deltaTime) {
 
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    if(glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+        if (!f_Pressed) {
+            if (_camera->getMode() == FREELOOK)
+                _camera->setMode(TURN_AROUND);
+            else
+                _camera->setMode(FREELOOK);
+            f_Pressed = true;
+        }
+    }
+    else
+        f_Pressed = false;
+
     if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
-        if (!keyPressed) {
+        if (!m_Pressed) {
             if (count % 3 == 0)
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             else if (count % 3 == 1)
@@ -93,11 +106,11 @@ void KeyListener::listening(GLFWwindow *window, float deltaTime) {
             else
                 glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
             count++;
-            keyPressed = true;
+            m_Pressed = true;
         }
     }
     else
-        keyPressed = false;
+        m_Pressed = false;
 }
 
 /*

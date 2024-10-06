@@ -106,4 +106,7 @@ glm::mat4 Camera::getViewMatrix() const {
     return glm::lookAt(_cameraPos, _cameraPos + _cameraFront, _cameraUp);
 }
 
+const bool &Camera::getMode() const { return _mode; }
+void Camera::setMode(bool mode) { _mode = mode; }
+
 /* ************************************************************************** */

@@ -96,13 +96,29 @@ void Draw::parseObject(std::ifstream &file) {
 }
 
 void Draw::drawing() {
+    glm::mat4 view;
+    glm::mat4 projection;
+    glm::mat4 mvp;
+
     //? Transform (Camera)
-    glm::mat4 view = _camera->getViewMatrix();
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)(DEFAULT_WIDTH / DEFAULT_HEIGHT), 0.1f, 100.0f);
-    glm::mat4 mvp = projection * view;
+    if (_camera->getMode() == FREELOOK) {
+        view = _camera->getViewMatrix();
+    }
+    else {
+        glm::vec3 objectPosition(0.0f, 0.0f, 0.0f);
+        float radius = 5.0f;
+        static float angle = 0.0f;
+        angle += 0.01f;
+        float camX = objectPosition.x + radius * cos(angle);
+        float camZ = objectPosition.z + radius * sin(angle);
+        float camY = objectPosition.y;
+        view = glm::lookAt(glm::vec3(camX, camY, camZ), objectPosition, glm::vec3(0.0f, 1.0f, 0.0f));
+    }
+    projection = glm::perspective(glm::radians(45.0f), (float)(DEFAULT_WIDTH / DEFAULT_HEIGHT), 0.1f, 100.0f);
+    mvp = projection * view;
     unsigned int transformLoc = glGetUniformLocation(_shader->getProgram(), "transform");
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(mvp)); 
-
+    
 
     //? Background
     glClearColor(2.0f, 2.0f, 2.0f, 1.0f);
