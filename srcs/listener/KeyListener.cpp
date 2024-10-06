@@ -44,7 +44,8 @@ void KeyListener::handleMouseMovement(GLFWwindow *window) {
 
     _lastX = xpos;
     _lastY = ypos;
-    _camera->processMouseMovement(xOffset, yOffset);
+    if (_camera->getMode() == FREELOOK)
+        _camera->processMouseMovement(xOffset, yOffset);
 }
 
 void KeyListener::handleMovement(GLFWwindow *window, float deltaTime) {
