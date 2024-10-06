@@ -8,10 +8,8 @@
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 
-Camera::Camera() : _yaw(-90.0f), _pitch(0.0f) {
-    _cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-    _cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-    _cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+Camera::Camera() {
+    reset();
 }
 
 /*
@@ -27,6 +25,14 @@ Camera::~Camera() {}
 /*
 ** ------------------------------- METHODS -----------------------------------
 */
+
+void Camera::reset() {
+    _yaw = -90.0f;
+    _pitch = 0.0f;
+    _cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+    _cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+    _cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+}
 
 void Camera::updateCameraVectors() {
     glm::vec3 front;

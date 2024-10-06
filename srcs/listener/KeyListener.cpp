@@ -48,6 +48,9 @@ void KeyListener::handleMouseMovement(GLFWwindow *window) {
 }
 
 void KeyListener::handleMovement(GLFWwindow *window, float deltaTime) {
+    if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        deltaTime = deltaTime * 2;
+
     if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         _camera->processKeyboardMovement(GLFW_KEY_W, deltaTime);
     if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -68,20 +71,16 @@ void KeyListener::handleMovement(GLFWwindow *window, float deltaTime) {
 
     if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
         _camera->processKeyboardMovement(GLFW_KEY_SPACE, deltaTime);
-    if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-            _camera->processKeyboardMovement(GLFW_KEY_LEFT_SHIFT, deltaTime);
+    if(glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        _camera->processKeyboardMovement(GLFW_KEY_LEFT_SHIFT, deltaTime);
 
     handleMouseMovement(window);
 }
 
-void KeyListener::listening(GLFWwindow *window, float deltaTime) {
+void KeyListener::handleMod(GLFWwindow *window) {
     static int count = 1;
     static bool f_Pressed = false;
     static bool m_Pressed = false;
-
-    glfwPollEvents();
-
-    handleMovement(window, deltaTime);
 
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
@@ -111,6 +110,16 @@ void KeyListener::listening(GLFWwindow *window, float deltaTime) {
     }
     else
         m_Pressed = false;
+
+    if(glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+        _camera->reset();
+}
+
+void KeyListener::listening(GLFWwindow *window, float deltaTime) {
+    glfwPollEvents();
+
+    handleMovement(window, deltaTime);
+    handleMod(window);
 }
 
 /*

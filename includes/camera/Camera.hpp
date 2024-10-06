@@ -21,6 +21,7 @@ class Camera {
 
 		void processKeyboardMovement(int direction, float deltaTime);
 		void processMouseMovement(float xOffset, float yOffset);
+		void reset();
 		glm::mat4 getViewMatrix() const;
 		const bool &getMode() const;
 		void setMode(bool mode);

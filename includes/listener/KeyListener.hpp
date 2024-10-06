@@ -14,6 +14,7 @@ class KeyListener {
 
 		void handleMovement(GLFWwindow *window, float deltaTime);
 		void handleMouseMovement(GLFWwindow *window);
+		void handleMod(GLFWwindow *window);
 	public:
 		KeyListener(Camera *camera);
 		~KeyListener();
