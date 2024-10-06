@@ -9,11 +9,14 @@
 
 # include <iostream>
 # include <string>
+# include <sstream>
+# include <fstream>
 # include "../glad/glad.hpp"
 # include <GLFW/glfw3.h>
 # include <glm/glm.hpp>
 # include <glm/gtc/matrix_transform.hpp>
 # include <glm/gtc/type_ptr.hpp>
+# include <vector>
 
 # include "Game.hpp"
 # include "window/Window.hpp"

@@ -6,11 +6,15 @@ class Camera;
 
 class Draw {
 	private:
-		unsigned int 	_shaderProgram;
-		unsigned int 	_VAO, _VBO, _EBO;
-		Camera			*_camera;
+		unsigned int 				_shaderProgram;
+		unsigned int 				_VAO, _VBO, _EBO;
+		std::vector<float>			_vertices;
+		std::vector<unsigned int>	_indices;
+		Camera						*_camera;
+
+		void parseObject(std::ifstream &file);
 	public:
-		Draw(Camera *camera);
+		Draw(Camera *camera, std::ifstream &file);
 		~Draw();
 
 		void drawing();

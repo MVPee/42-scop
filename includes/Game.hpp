@@ -14,7 +14,7 @@ class Game {
 		Draw			*_draw;
 		Camera			*_camera;
 	public:
-		Game();
+		Game(std::ifstream &file);
 		~Game();
 
 		void run();

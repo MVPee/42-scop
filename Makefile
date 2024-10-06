@@ -50,6 +50,6 @@ fclean: clean
 re: fclean all
 
 run: all
-	./$(NAME)
+	./$(NAME) rsrcs/42.obj
 
 .PHONY: all clean fclean re run

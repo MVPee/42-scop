@@ -8,7 +8,7 @@
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 
-Game::Game() {
+Game::Game(std::ifstream &file) {
     try {
         _window = new Window();
     }
@@ -17,7 +17,7 @@ Game::Game() {
     }
     _camera = new Camera();
     _key = new KeyListener(_camera);
-    _draw = new Draw(_camera);
+    _draw = new Draw(_camera, file);
 
 }
 
