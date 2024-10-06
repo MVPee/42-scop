@@ -1,7 +1,7 @@
 #pragma once
 
 # define PROGRAM_NAME "scop"
-# define VERSION "0.5"
+# define VERSION "0.6"
 # define DEFAULT_WIDTH 1920
 # define DEFAULT_HEIGHT 1080
 # define CAMERA_SPEED 10.0f
