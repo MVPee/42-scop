@@ -68,6 +68,9 @@ void Camera::processKeyboardMovement(int key, float deltaTime) {
     if (key == GLFW_KEY_RIGHT)
         _yaw += CAMERA_SPEED * velocity;
 
+    if (_yaw < 0.0f) _yaw += 360.0f;
+    if (_yaw > 360.0f) _yaw -= 360.0f;
+
     updateCameraVectors();
 }
 
@@ -76,7 +79,10 @@ void Camera::processMouseMovement(float xOffset, float yOffset) {
     yOffset *= MOUSE_SPEED;
 
     _yaw += xOffset;
-    _pitch -= yOffset;
+    _pitch += yOffset;
+
+    if (_yaw < 0.0f) _yaw += 360.0f;
+    if (_yaw > 360.0f) _yaw -= 360.0f;
 
     if (_pitch > 89.0f)
         _pitch = 89.0f;
@@ -88,6 +94,8 @@ void Camera::processMouseMovement(float xOffset, float yOffset) {
     front.y = sin(glm::radians(_pitch));
     front.z = sin(glm::radians(_yaw)) * cos(glm::radians(_pitch));
     _cameraFront = glm::normalize(front);
+
+    updateCameraVectors();
 }
 
 /*

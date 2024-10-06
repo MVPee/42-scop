@@ -9,7 +9,6 @@
 */
 
 KeyListener::KeyListener(Camera *camera) : _camera(camera) {
-    _firstMouse = true;
     _lastX = 400.0f;
     _lastY = 400.0f;
 }
@@ -29,20 +28,23 @@ KeyListener::~KeyListener() {}
 */
 
 void KeyListener::handleMouseMovement(GLFWwindow *window) {
-    double xpos, ypos;
+    static bool firstMouse = true;
+    double d_xpos, d_ypos;
     
-    glfwGetCursorPos(window, &xpos, &ypos);
-    if (_firstMouse) {
+    glfwGetCursorPos(window, &d_xpos, &d_ypos);
+    float xpos = static_cast<float>(d_xpos);
+    float ypos = static_cast<float>(d_ypos);
+    if (firstMouse) {
         _lastX = xpos;
         _lastY = ypos;
-        _firstMouse = false;
+        firstMouse = false;
     }
     float xOffset = xpos - _lastX;
     float yOffset = _lastY - ypos;
 
     _lastX = xpos;
     _lastY = ypos;
-    _camera->processMouseMovement(xOffset, -yOffset);
+    _camera->processMouseMovement(xOffset, yOffset);
 }
 
 void KeyListener::handleMovement(GLFWwindow *window, float deltaTime) {
