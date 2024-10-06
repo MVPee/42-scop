@@ -9,10 +9,10 @@ class Object;
 
 class Game {
 	private:
-		Window			*_window;
-		KeyListener		*_key;
-		Camera			*_camera;
-		Object			*_object;
+		Window					*_window;
+		KeyListener				*_key;
+		Camera					*_camera;
+		Object				 	*_object;
 	public:
 		Game(std::ifstream &file);
 		~Game();

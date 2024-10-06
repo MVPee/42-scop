@@ -4,6 +4,15 @@
 ** ------------------------------- STATIC -------------------------------------
 */
 
+float getDeltaTime() {
+    static float lastFrame = 0.0f;
+    static float deltaTime = 0.0f;
+    float currentFrame = glfwGetTime();
+    deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+    return (deltaTime);
+}
+
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
@@ -41,17 +50,12 @@ Game::~Game() {
 */
 
 void Game::run() {
-    static float lastFrame = 0.0f;
-    static float deltaTime = 0.0f;
-    float currentFrame = glfwGetTime();
-    deltaTime = currentFrame - lastFrame;
-    lastFrame = currentFrame;
-
     glClearColor(2.0f, 2.0f, 2.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    _key->listening(_window->getWindow(), deltaTime);
-    _camera->update(_object);
+    _key->listening(_window->getWindow(), getDeltaTime());
+
+    _camera->updateForObject(_object);
     _object->draw();
 
     glfwSwapBuffers(_window->getWindow());

@@ -26,7 +26,7 @@ Camera::~Camera() {}
 ** ------------------------------- METHODS -----------------------------------
 */
 
-void Camera::update(Object *_object) {
+void Camera::updateForObject(Object *_object) {
     glm::mat4 view;
     glm::mat4 projection;
     glm::mat4 mvp;
