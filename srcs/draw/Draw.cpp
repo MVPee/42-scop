@@ -60,6 +60,7 @@ Draw::~Draw() {
 */
 
 void Draw::parseObject(std::ifstream &file) {
+    static unsigned int count = 0;
     std::string line;
     std::string value;
 
@@ -68,12 +69,24 @@ void Draw::parseObject(std::ifstream &file) {
         iss >> value;
         if (value == "v") { //? VERTEX
             float vertex;
-            while (iss >> vertex) {
+            while (iss >> vertex)
                 _vertices.push_back(vertex);
+            if (count % 3 == 0) {
+                _vertices.push_back(1.0f);
+                _vertices.push_back(0.0f);
+                _vertices.push_back(0.0f);
             }
-            _vertices.push_back(0.3f);
-            _vertices.push_back(0.0f);
-            _vertices.push_back(0.0f);
+            else if (count % 3 == 1) {
+                _vertices.push_back(0.0f);
+                _vertices.push_back(1.0f);
+                _vertices.push_back(0.0f);
+            }
+            else {
+                _vertices.push_back(0.0f);
+                _vertices.push_back(0.0f);
+                _vertices.push_back(1.0f);
+            }
+            count++;
         }
         else if (value == "f") { //? INDICES
             std::vector<unsigned int> faceIndices;
@@ -118,7 +131,7 @@ void Draw::drawing() {
     mvp = projection * view;
     unsigned int transformLoc = glGetUniformLocation(_shader->getProgram(), "transform");
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(mvp)); 
-    
+
 
     //? Background
     glClearColor(2.0f, 2.0f, 2.0f, 1.0f);
