@@ -12,6 +12,7 @@ class Draw {
 		std::vector<unsigned int>	_indices;
 		Camera						*_camera;
 		Shader						*_shader;
+		glm::vec3 					_objectPosition;
 
 		void parseObject(std::ifstream &file);
 	public:

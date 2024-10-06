@@ -106,6 +106,25 @@ void Draw::parseObject(std::ifstream &file) {
             }
         }
     }
+
+    float biggest[3] = {std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), std::numeric_limits<float>::min()};
+    float lowest[3] = {std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
+
+    for (size_t i = 0; i < _vertices.size(); i += 6) {
+        for (int j = 0; j < 3; ++j) {
+            if (_vertices[i + j] < lowest[j])
+                lowest[j] = _vertices[i + j];
+            if (_vertices[i + j] > biggest[j])
+                biggest[j] = _vertices[i + j];
+        }
+    }
+
+    glm::vec3 center = glm::vec3 (
+        (lowest[0] + biggest[0]) / 2,
+        (lowest[1] + biggest[1]) / 2,
+        (lowest[2] + biggest[2]) / 2
+    );
+    _objectPosition = center;
 }
 
 void Draw::drawing() {
@@ -118,14 +137,13 @@ void Draw::drawing() {
         view = _camera->getViewMatrix();
     }
     else {
-        glm::vec3 objectPosition(0.0f, 0.0f, 0.0f);
         float radius = 5.0f;
         static float angle = 0.0f;
         angle += 0.01f;
-        float camX = objectPosition.x + radius * cos(angle);
-        float camZ = objectPosition.z + radius * sin(angle);
-        float camY = objectPosition.y;
-        view = glm::lookAt(glm::vec3(camX, camY, camZ), objectPosition, glm::vec3(0.0f, 1.0f, 0.0f));
+        float camX = _objectPosition.x + radius * cos(angle);
+        float camZ = _objectPosition.z + radius * sin(angle);
+        float camY = _objectPosition.y;
+        view = glm::lookAt(glm::vec3(camX, camY, camZ), _objectPosition, glm::vec3(0.0f, 1.0f, 0.0f));
     }
     projection = glm::perspective(glm::radians(45.0f), (float)(DEFAULT_WIDTH / DEFAULT_HEIGHT), 0.1f, 100.0f);
     mvp = projection * view;
