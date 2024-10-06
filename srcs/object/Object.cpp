@@ -10,7 +10,6 @@
 
 Object::Object(std::ifstream &file) {
 	_shader = new Shader();
-    _shader->use();
 
 	parseFile(file);
 	parsePosition();
@@ -19,24 +18,24 @@ Object::Object(std::ifstream &file) {
     glGenBuffers(1, &_VBO);
     glGenBuffers(1, &_EBO);
 
-    // Lier le VAO
+    //? LINK VAO
     glBindVertexArray(_VAO);
 
-    // Charger les sommets dans le VBO
+    //? LOAD SUMMITS
     glBindBuffer(GL_ARRAY_BUFFER, _VBO);
     glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(float), &_vertices[0], GL_STATIC_DRAW);
 
-    // Attribuer les pointeurs d'attributs de sommets (position et couleur)
+    //? LOAD COLOR AND ATTRIBUT WITH VAO
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    // Charger les indices dans l'EBO
+    //? LOAD INDICES
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(unsigned int), &_indices[0], GL_STATIC_DRAW);
 
-    // Désactiver la liaison du VAO
+    //? DELINK VAO
     glBindVertexArray(0);
 }
 
@@ -128,11 +127,18 @@ void Object::parsePosition() {
     );
 }
 
+void Object::draw() const {
+	_shader->use();
+	glBindVertexArray(_VAO);
+    glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0);
+}
+
 /*
 ** ------------------------------- ACCESSOR ----------------------------------
 */
 
 const glm::vec3 &Object::getPosition() const { return _position; }
+void Object::setPosition(glm::vec3 position) { _position = position;}
 const std::vector<float> &Object::getVertices() const { return _vertices; }
 const std::vector<unsigned int> &Object::getIndices() const { return _indices; }
 const unsigned int &Object::getVAO() const { return _VAO; }

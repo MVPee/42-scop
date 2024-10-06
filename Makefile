@@ -12,7 +12,6 @@ SOURCES :=	main.cpp \
 			srcs/Game.cpp \
 			srcs/window/Window.cpp \
 			srcs/listener/KeyListener.cpp \
-			srcs/draw/Draw.cpp \
 			srcs/camera/Camera.cpp \
 			srcs/object/Object.cpp \
 			srcs/object/shader/Shader.cpp

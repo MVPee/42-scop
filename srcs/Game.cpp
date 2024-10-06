@@ -17,7 +17,7 @@ Game::Game(std::ifstream &file) {
     }
     _camera = new Camera();
     _key = new KeyListener(_camera);
-    _draw = new Draw(_camera, file);
+    _object = new Object(file);
 
 }
 
@@ -27,8 +27,8 @@ Game::Game(std::ifstream &file) {
 
 Game::~Game() {
     delete _camera;
-    delete _draw;
     delete _key;
+    delete _object;
     delete _window;
 }
 
@@ -47,10 +47,13 @@ void Game::run() {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    _key->listening(_window->getWindow(), deltaTime);
-    _draw->drawing();
+    glClearColor(2.0f, 2.0f, 2.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Traiter les événements and swap buffer
+    _key->listening(_window->getWindow(), deltaTime);
+    _camera->update(_object);
+    _object->draw();
+
     glfwSwapBuffers(_window->getWindow());
 }
 

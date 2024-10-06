@@ -18,7 +18,10 @@ class Object {
 		Object(std::ifstream &file);
 		~Object();
 
+		void draw() const;
+
 		const glm::vec3 &getPosition() const;
+		void setPosition(glm::vec3 position);
 		const std::vector<float> &getVertices() const;
 		const std::vector<unsigned int> &getIndices() const;
 		const unsigned int &getVAO() const;
