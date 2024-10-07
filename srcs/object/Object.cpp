@@ -91,22 +91,19 @@ void Object::parseFile(std::ifstream &file) {
                     std::stringstream ss(vertexInfo);
                     std::string vertexIndex, textureIndex, normalIndex;
 
-                    // Extraire l'indice des sommets (v)
-                    if (std::getline(ss, vertexIndex, '/')) {
+                    if (std::getline(ss, vertexIndex, '/')) { //?v
                         unsigned int index = std::stoi(vertexIndex) - 1;
                         faceIndices.push_back(index);
                     }
 
-                    // Extraire l'indice de texture (vt) s'il existe
-                    if (std::getline(ss, textureIndex, '/')) {
+                    if (std::getline(ss, textureIndex, '/')) { //?vt
                         if (!textureIndex.empty()) {
                             unsigned int texIndex = std::stoi(textureIndex) - 1;
                             faceTextureIndices.push_back(texIndex);
                         }
                     }
 
-                    // Extraire l'indice des normales (vn) s'il existe
-                    if (std::getline(ss, normalIndex)) {
+                    if (std::getline(ss, normalIndex)) { //?vn
                         if (!normalIndex.empty()) {
                             unsigned int normIndex = std::stoi(normalIndex) - 1;
                             faceNormalIndices.push_back(normIndex);
@@ -115,11 +112,9 @@ void Object::parseFile(std::ifstream &file) {
                 }
             }
 
-            // Ajouter les indices des sommets (v)
             if (faceIndices.size() == 3) {
                 _indice.insert(_indice.end(), faceIndices.begin(), faceIndices.end());
             } else if (faceIndices.size() == 4) {
-                // Convertir un quadrilatère en deux triangles
                 _indice.push_back(faceIndices[0]);
                 _indice.push_back(faceIndices[1]);
                 _indice.push_back(faceIndices[2]);
@@ -128,7 +123,6 @@ void Object::parseFile(std::ifstream &file) {
                 _indice.push_back(faceIndices[3]);
             }
 
-            // Ajouter les indices de texture (vt)
             if (faceTextureIndices.size() == 3) {
                 _indiceTexture.insert(_indiceTexture.end(), faceTextureIndices.begin(), faceTextureIndices.end());
             } else if (faceTextureIndices.size() == 4) {
@@ -140,7 +134,6 @@ void Object::parseFile(std::ifstream &file) {
                 _indiceTexture.push_back(faceTextureIndices[3]);
             }
 
-            // Ajouter les indices des normales (vn)
             if (faceNormalIndices.size() == 3) {
                 _indiceNormal.insert(_indiceNormal.end(), faceNormalIndices.begin(), faceNormalIndices.end());
             } else if (faceNormalIndices.size() == 4) {
