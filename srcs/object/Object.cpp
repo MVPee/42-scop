@@ -23,17 +23,17 @@ Object::Object(std::ifstream &file) {
 
     //? LOAD SUMMITS
     glBindBuffer(GL_ARRAY_BUFFER, _VBO);
-    glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(float), &_vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, _vertex.size() * sizeof(float), &_vertex[0], GL_STATIC_DRAW);
 
     //? LOAD COLOR AND ATTRIBUT WITH VAO
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    // glEnableVertexAttribArray(1);
 
     //? LOAD INDICES
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(unsigned int), &_indices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indice.size() * sizeof(unsigned int), &_indice[0], GL_STATIC_DRAW);
 
     //? DELINK VAO
     glBindVertexArray(0);
@@ -59,49 +59,97 @@ Object::~Object() {
 */
 
 void Object::parseFile(std::ifstream &file) {
-	static unsigned int count = 0;
+    float vertex;
     std::string line;
-    std::string value;
+    std::string token;
 
     while (std::getline(file, line)) {
         std::istringstream iss(line);
-        iss >> value;
-        if (value == "v") { //? VERTEX
-            float vertex;
+        iss >> token;
+        if (token == "v") //? VERTEX
             while (iss >> vertex)
-                _vertices.push_back(vertex);
-            if (count % 3 == 0) {
-                _vertices.push_back(1.0f);
-                _vertices.push_back(0.0f);
-                _vertices.push_back(0.0f);
-            }
-            else if (count % 3 == 1) {
-                _vertices.push_back(0.0f);
-                _vertices.push_back(1.0f);
-                _vertices.push_back(0.0f);
+                _vertex.push_back(vertex);
+        else if (token == "vt") //? VERTEX TEXTURE
+            while (iss >> vertex)
+                _vertexTexture.push_back(vertex);
+        else if (token == "vn") //? VERTEX NORNAL (LIGHT)
+            while (iss >> vertex)
+                _vertexNormal.push_back(vertex);
+        else if (token == "f") { //? INDICES
+            std::vector<unsigned int> faceIndices;
+            std::vector<unsigned int> faceTextureIndices;
+            std::vector<unsigned int> faceNormalIndices;
+
+            if (line.find("/") == std::string::npos) {
+                unsigned int index;
+                while (iss >> index)
+                    faceIndices.push_back(index - 1);
             }
             else {
-                _vertices.push_back(0.0f);
-                _vertices.push_back(0.0f);
-                _vertices.push_back(1.0f);
+                std::string vertexInfo;
+                while (iss >> vertexInfo) {
+                    std::stringstream ss(vertexInfo);
+                    std::string vertexIndex, textureIndex, normalIndex;
+
+                    // Extraire l'indice des sommets (v)
+                    if (std::getline(ss, vertexIndex, '/')) {
+                        unsigned int index = std::stoi(vertexIndex) - 1;
+                        faceIndices.push_back(index);
+                    }
+
+                    // Extraire l'indice de texture (vt) s'il existe
+                    if (std::getline(ss, textureIndex, '/')) {
+                        if (!textureIndex.empty()) {
+                            unsigned int texIndex = std::stoi(textureIndex) - 1;
+                            faceTextureIndices.push_back(texIndex);
+                        }
+                    }
+
+                    // Extraire l'indice des normales (vn) s'il existe
+                    if (std::getline(ss, normalIndex)) {
+                        if (!normalIndex.empty()) {
+                            unsigned int normIndex = std::stoi(normalIndex) - 1;
+                            faceNormalIndices.push_back(normIndex);
+                        }
+                    }
+                }
             }
-            count++;
-        }
-        else if (value == "f") { //? INDICES
-            std::vector<unsigned int> faceIndices;
-            unsigned int index;
-            while (iss >> index)
-                faceIndices.push_back(index - 1);
-            if (faceIndices.size() == 3)
-                _indices.insert(_indices.end(), faceIndices.begin(), faceIndices.end());
-            else if (faceIndices.size() == 4) {
-                _indices.push_back(faceIndices[0]);
-                _indices.push_back(faceIndices[1]);
-                _indices.push_back(faceIndices[2]);
-                
-                _indices.push_back(faceIndices[0]);
-                _indices.push_back(faceIndices[2]);
-                _indices.push_back(faceIndices[3]);
+
+            // Ajouter les indices des sommets (v)
+            if (faceIndices.size() == 3) {
+                _indice.insert(_indice.end(), faceIndices.begin(), faceIndices.end());
+            } else if (faceIndices.size() == 4) {
+                // Convertir un quadrilatère en deux triangles
+                _indice.push_back(faceIndices[0]);
+                _indice.push_back(faceIndices[1]);
+                _indice.push_back(faceIndices[2]);
+                _indice.push_back(faceIndices[0]);
+                _indice.push_back(faceIndices[2]);
+                _indice.push_back(faceIndices[3]);
+            }
+
+            // Ajouter les indices de texture (vt)
+            if (faceTextureIndices.size() == 3) {
+                _indiceTexture.insert(_indiceTexture.end(), faceTextureIndices.begin(), faceTextureIndices.end());
+            } else if (faceTextureIndices.size() == 4) {
+                _indiceTexture.push_back(faceTextureIndices[0]);
+                _indiceTexture.push_back(faceTextureIndices[1]);
+                _indiceTexture.push_back(faceTextureIndices[2]);
+                _indiceTexture.push_back(faceTextureIndices[0]);
+                _indiceTexture.push_back(faceTextureIndices[2]);
+                _indiceTexture.push_back(faceTextureIndices[3]);
+            }
+
+            // Ajouter les indices des normales (vn)
+            if (faceNormalIndices.size() == 3) {
+                _indiceNormal.insert(_indiceNormal.end(), faceNormalIndices.begin(), faceNormalIndices.end());
+            } else if (faceNormalIndices.size() == 4) {
+                _indiceNormal.push_back(faceNormalIndices[0]);
+                _indiceNormal.push_back(faceNormalIndices[1]);
+                _indiceNormal.push_back(faceNormalIndices[2]);
+                _indiceNormal.push_back(faceNormalIndices[0]);
+                _indiceNormal.push_back(faceNormalIndices[2]);
+                _indiceNormal.push_back(faceNormalIndices[3]);
             }
         }
     }
@@ -111,12 +159,12 @@ void Object::parsePosition() {
 	float biggest[3] = {std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), std::numeric_limits<float>::min()};
     float lowest[3] = {std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
 
-    for (size_t i = 0; i < _vertices.size(); i += 6) {
+    for (size_t i = 0; i < _vertex.size(); i += 6) {
         for (int j = 0; j < 3; ++j) {
-            if (_vertices[i + j] < lowest[j])
-                lowest[j] = _vertices[i + j];
-            if (_vertices[i + j] > biggest[j])
-                biggest[j] = _vertices[i + j];
+            if (_vertex[i + j] < lowest[j])
+                lowest[j] = _vertex[i + j];
+            if (_vertex[i + j] > biggest[j])
+                biggest[j] = _vertex[i + j];
         }
     }
 
@@ -130,7 +178,7 @@ void Object::parsePosition() {
 void Object::draw() const {
 	_shader->use();
 	glBindVertexArray(_VAO);
-    glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, _indice.size(), GL_UNSIGNED_INT, 0);
 }
 
 /*
@@ -139,8 +187,8 @@ void Object::draw() const {
 
 const glm::vec3 &Object::getPosition() const { return _position; }
 void Object::setPosition(glm::vec3 position) { _position = position;}
-const std::vector<float> &Object::getVertices() const { return _vertices; }
-const std::vector<unsigned int> &Object::getIndices() const { return _indices; }
+const std::vector<float> &Object::getVertices() const { return _vertex; }
+const std::vector<unsigned int> &Object::getIndices() const { return _indice; }
 const unsigned int &Object::getVAO() const { return _VAO; }
 Shader *Object::getShader() const { return _shader; }
 

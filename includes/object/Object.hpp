@@ -7,8 +7,12 @@ class Shader;
 class Object {
 	private:
 		Shader						*_shader;
-		std::vector<float>			_vertices;
-		std::vector<unsigned int>	_indices;
+		std::vector<float>			_vertex;
+		std::vector<float>			_vertexTexture;
+		std::vector<float>			_vertexNormal;
+		std::vector<unsigned int>	_indice;
+		std::vector<unsigned int>	_indiceTexture;
+		std::vector<unsigned int>	_indiceNormal;
 		glm::vec3					_position;
 		unsigned int 				_VAO, _VBO, _EBO;
 
