@@ -1,63 +1,45 @@
 #ifndef MATH_HPP
 # define MATH_HPP
 
-# include "../macro.hpp"
+# include <iostream>
+# include <string>
+# include <cmath>
 
-namespace math {
-    class Vec3 {
+namespace ft_math {
+    class vec3 {
         private:
         public:
-            float   _x;
-            float   _y;
-            float   _z;
+            float   x;
+            float   y;
+            float   z;
 
-        Vec3() : _x(0.0f), _y(0.0f), _z(0.0f) {}
-        Vec3(float nbr) : _x(nbr), _y(nbr), _z(nbr) {}
-        Vec3(float x, float y, float z) : _x(x), _y(y), _z(z) {}
-        Vec3(const Vec3 &vec3) : _x(vec3._x), _y(vec3._y), _z(vec3._z) {}
-        Vec3 &operator=(const Vec3 &vec3) {
-            if (this != &vec3) {
-                _x = vec3._x;
-                _y = vec3._y;
-                _z = vec3._z;
-            }
-            return *this;
-        }
-        Vec3 operator-(const Vec3 &vec3) const { return Vec3(_x - vec3._x, _y - vec3._y, _z - vec3._z); }
-        Vec3 operator+(const Vec3 &vec3) const { return Vec3(_x + vec3._x, _y + vec3._y, _z + vec3._z); }
+            vec3();
+            vec3(float nbr);
+            vec3(float x, float y, float z);
+            vec3(const vec3 &vec3);
+            vec3 &operator=(const vec3 &vec3);
+            vec3 operator-(const vec3 &v) const;
+            vec3 operator+(const vec3 &v) const;
+            vec3 operator*(float scalar) const;
+            vec3 &operator+=(const vec3 &v);
+            vec3 &operator-=(const vec3 &v);
     };
 
-    class Mat4 {
+    class mat4 {
         public:
             float _data[4][4];
-            Mat4() {
-                for (int i = 0; i < 4; ++i)
-                    for (int j = 0; j < 4; ++j)
-                        _data[i][j] = (i == j) ? 1.0f : 0.0f;
-            }
-            Mat4(float data[4][4]) {
-                for (int i = 0; i < 4; ++i)
-                    for (int j = 0; j < 4; ++j)
-                        _data[i][j] = data[i][j];
-            }
-            Mat4 operator*(const Mat4 &mat) const {
-                Mat4 result;
-                for (int i = 0; i < 4; ++i) {
-                    for (int j = 0; j < 4; ++j) {
-                        result._data[i][j] = 0;
-                        for (int k = 0; k < 4; ++k)
-                            result._data[i][j] += _data[i][k] * mat._data[k][j];
-                    }
-                }
-                return result;
-            }
+
+            mat4();
+            mat4(float data[4][4]);
+            mat4 operator*(const mat4 &mat) const;
+            float* value_ptr();
     };
 
-    Vec3 normalize(const Vec3 &vec3);
-    Vec3 cross(const Vec3 &vec1, const Vec3 &vec2);
+    vec3 normalize(const vec3 &vec3);
+    vec3 cross(const vec3 &vec1, const vec3 &vec2);
 
-    Mat4 lookAt(const Vec3 &cameraPos, const Vec3 &target, const Vec3 &up);
-    Mat4 perspective(float fovy, float aspect, float zNear, float zFar);
+    mat4 lookAt(const vec3 &cameraPos, const vec3 &target, const vec3 &up);
+    mat4 perspective(float fovy, float aspect, float zNear, float zFar);
 
     float radians (float degrees);
 }
