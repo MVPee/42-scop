@@ -42,7 +42,7 @@ void Camera::updateForObject(Object *_object) {
         float camY = _object->getPosition().y;
         view = glm::lookAt(glm::vec3(camX, camY, camZ), _object->getPosition(), glm::vec3(0.0f, 1.0f, 0.0f));
     }
-    projection = glm::perspective(glm::radians(45.0f), (float)(DEFAULT_WIDTH / DEFAULT_HEIGHT), 0.1f, 100.0f);
+    projection = glm::perspective(math::radians(45.0f), (float)(DEFAULT_WIDTH / DEFAULT_HEIGHT), 0.1f, 100.0f);
     mvp = projection * view;
     unsigned int transformLoc = glGetUniformLocation(_object->getShader()->getProgram(), "transform");
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(mvp)); 
@@ -58,9 +58,9 @@ void Camera::reset() {
 
 void Camera::updateCameraVectors() {
     glm::vec3 front;
-    front.x = cos(glm::radians(_yaw)) * cos(glm::radians(_pitch));
-    front.y = sin(glm::radians(_pitch));
-    front.z = sin(glm::radians(_yaw)) * cos(glm::radians(_pitch));
+    front.x = cos(math::radians(_yaw)) * cos(math::radians(_pitch));
+    front.y = sin(math::radians(_pitch));
+    front.z = sin(math::radians(_yaw)) * cos(math::radians(_pitch));
     _cameraFront = glm::normalize(front);
 
     glm::vec3 worldUp(0.0f, 1.0f, 0.0f);
@@ -119,9 +119,9 @@ void Camera::processMouseMovement(float xOffset, float yOffset) {
         _pitch = -89.0f;
 
     glm::vec3 front;
-    front.x = cos(glm::radians(_yaw)) * cos(glm::radians(_pitch));
-    front.y = sin(glm::radians(_pitch));
-    front.z = sin(glm::radians(_yaw)) * cos(glm::radians(_pitch));
+    front.x = cos(math::radians(_yaw)) * cos(math::radians(_pitch));
+    front.y = sin(math::radians(_pitch));
+    front.z = sin(math::radians(_yaw)) * cos(math::radians(_pitch));
     _cameraFront = glm::normalize(front);
 
     updateCameraVectors();
