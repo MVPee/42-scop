@@ -23,8 +23,8 @@ CXX := c++
 CXXFLAGS := -std=c++11 -Wall -Wextra -Werror -g #-fsanitize=address
 
 ifeq ($(UNAME_S), Darwin)
-	INCLUDES := -I/Users/mvan-pee/.brew/Cellar/glfw/3.4/include
-	LDFLAGS := -L/Users/mvan-pee/.brew/Cellar/glfw/3.4/lib -lglfw -ldl -framework OpenGL
+	INCLUDES := -I/Users/mvan-pee/.brew/Cellar/glfw/3.4/include -I/Users/mvan-pee/.brew/Cellar/glm/1.0.1/include
+	LDFLAGS := -L/Users/mvan-pee/.brew/Cellar/glfw/3.4/lib -L/Users/mvan-pee/.brew/Cellar/glm/1.0.1/lib -lglfw -ldl -framework OpenGL
 else ifeq ($(UNAME_S), Linux)
     INCLUDES := -I/usr/include
     LDFLAGS := -L/usr/lib -lglfw -ldl -lGL

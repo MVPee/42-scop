@@ -8,7 +8,6 @@ class KeyListener {
 	private:
 		Camera	*_camera;
 
-		bool 	_firstMouse;
 		float	_lastX;
 		float	_lastY;
 
